@@ -1,0 +1,136 @@
+🌟 Step-by-Step: CI with GitHub Actions
+✅ Step 1: Create or Use an Existing GitHub Repository
+Go to https://github.com
+
+Click "New repository"
+
+Name it something like selenium-ci-demo
+
+Optionally add a README.md, then click Create Repository
+
+✅ Step 2: Clone the Repository to Your Local Machine
+Open your terminal (CMD / Git Bash / VS Code terminal):
+
+bash
+Copy
+Edit
+git clone https://github.com/<your-username>/selenium-ci-demo.git
+cd selenium-ci-demo
+🔁 Replace <your-username> with your GitHub username.
+
+✅ Step 3: Add Your Project Files
+Inside the cloned folder, create these files:
+
+📄 index.html
+html
+Copy
+Edit
+<!DOCTYPE html>
+<html>
+<head><title>Multiply</title></head>
+<body>
+    <h1>Multiply Numbers</h1>
+    <input id="num1" type="number">
+    <input id="num2" type="number">
+    <button onclick="multiply()">Multiply</button>
+    <p id="result">Result: </p>
+
+    <script>
+        function multiply() {
+            let a = +document.getElementById("num1").value;
+            let b = +document.getElementById("num2").value;
+            document.getElementById("result").textContent = "Result: " + (a * b);
+        }
+    </script>
+</body>
+</html>
+🧪 test_multiply.py
+python
+Copy
+Edit
+from selenium import webdriver
+from selenium.webdriver.chrome.service import Service
+from selenium.webdriver.common.by import By
+from webdriver_manager.chrome import ChromeDriverManager
+import time
+
+driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()))
+driver.get("http://localhost:8000/index.html")
+
+driver.find_element(By.ID, "num1").send_keys("5")
+driver.find_element(By.ID, "num2").send_keys("6")
+driver.find_element(By.TAG_NAME, "button").click()
+
+time.sleep(1)
+result = driver.find_element(By.ID, "result").text
+print("Result on page:", result)
+assert "30" in result
+
+driver.quit()
+✅ Step 4: Create GitHub Actions Workflow
+Make a folder .github/workflows and add a file selenium-test.yml
+
+bash
+Copy
+Edit
+mkdir -p .github/workflows
+📄 .github/workflows/selenium-test.yml
+yaml
+Copy
+Edit
+name: Selenium Test CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.9'
+
+    - name: Install dependencies
+      run: |
+        pip install selenium webdriver-manager
+
+    - name: Start local server
+      run: |
+        python3 -m http.server 8000 &
+        sleep 5
+
+    - name: Run Selenium Test
+      run: python3 test_multiply.py
+✅ Step 5: Commit and Push Your Code
+bash
+Copy
+Edit
+git add .
+git commit -m "Add Selenium test and GitHub Actions CI"
+git push origin main
+✅ Step 6: Check CI Status on GitHub
+Go to your repo on GitHub
+
+Click the "Actions" tab
+
+Click on the latest workflow run
+
+See test results and logs
+
+💡 Extra Tips
+🧪 You can use pytest if you want test reports.
+
+🤖 You can run tests in headless mode (no browser window).
+
+🚀 You can also add deployment steps after testing.
+
+Would you like me to show you how to make the browser run in headless mode, or how to use pytest for better test structure?
