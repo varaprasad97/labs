@@ -1,0 +1,127 @@
+🚀
+npm create vite@latest my-react-app --template react
+cd my-react-app
+npm install
+
+git init
+
+git remote add origin https://github.com/your-username/my-react-app.git
+git add .
+git commit -m "Initial commit"
+git push -u origin main
+
+git checkout -b feature/navbar
+
+git add .
+git commit -m "Add navbar component"
+
+git push -u origin feature/navbar
+✅ 4. Create a Pull Request (PR)
+Go to the GitHub repository in your browser
+
+GitHub will usually suggest you open a PR
+
+Click “Compare & pull request”
+
+Add a description of what you did
+
+Click “Create pull request”
+
+You can even enable code reviews or CI checks here if you're working with a team.
+
+✅ 5. Merge the PR
+Once it's reviewed or tested:
+
+Use "Squash and merge" to keep history clean
+
+Or "Merge" to keep all individual commits
+
+Or "Rebase and merge" for linear history
+
+After merging, delete the feature branch (GitHub usually suggests it).
+
+✅ 6. Pull the Latest Changes
+Back in your local main branch:
+
+bash
+CopyEdit
+git checkout main
+git pull origin main
+
+
+
+
+
+
+import React, { useState } from 'react';
+
+function RegistrationForm() {
+  // Step 1: Declare state for form fields
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    phone: '',
+    event: ''
+  });
+
+  // Step 2: Handle input change
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]: value
+    }));
+  };
+
+  // Step 3: Handle form submission
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    console.log('Form submitted:', formData);
+    alert("Registration Successful!");
+  };
+
+  return (
+    <div style={{ maxWidth: '400px', margin: 'auto', padding: '20px', border: '1px solid #ccc', borderRadius: '10px' }}>
+      <h2>Event Registration Form</h2>
+      <form onSubmit={handleSubmit}>
+        <label>Name:</label><br />
+        <input type="text" name="name" value={formData.name} onChange={handleChange} required /><br /><br />
+
+        <label>Email:</label><br />
+        <input type="email" name="email" value={formData.email} onChange={handleChange} required /><br /><br />
+
+        <label>Phone:</label><br />
+        <input type="tel" name="phone" value={formData.phone} onChange={handleChange} required /><br /><br />
+
+        <label>Event:</label><br />
+        <select name="event" value={formData.event} onChange={handleChange} required>
+          <option value="">-- Select an Event --</option>
+          <option value="coding">Coding Challenge</option>
+          <option value="seminar">Tech Seminar</option>
+          <option value="workshop">Workshop</option>
+        </select><br /><br />
+
+        <button type="submit">Register</button>
+      </form>
+    </div>
+  );
+}
+
+export default RegistrationForm;
+🔗 Step 4: Use This Component in App.js
+Open src/App.js and update it like this:
+
+jsx
+CopyEdit
+import React from 'react';
+import RegistrationForm from './RegistrationForm';
+
+function App() {
+  return (
+    <div className="App">
+      <RegistrationForm />
+    </div>
+  );
+}
+
+export default App;
